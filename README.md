@@ -1,5 +1,10 @@
 # Settings-discover
-Приложение для поиска устройств с библиотекой Settings
+Приложение для поиска устройств с библиотекой [Settings](https://github.com/GyverLibs/Settings)
+- [Скачать .apk](https://github.com/GyverLibs/Settings-discover/releases/latest/download/Settings.apk
+) последней версии
+- [Скачать .html](https://github.com/GyverLibs/Settings-discover/releases/latest/download/index.html) последней версии
+
+Для поиска смартфон/ПК должны быть в одной локальной сети с устройством. В приложении должна быть указана корректная маска подсети (настраивается в роутере). Если в роутере она не менялась - то она там стандартная *255.255.255.0*, как и в приложении по умолчанию.
 
 > Требуется версия библиотеки v1.0.13+
 
