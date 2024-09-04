@@ -1,18 +1,26 @@
-export const lang = {
+const lang_base = {
     ru: {
         help: `
-- Обновить страницу: обнаружить известные устройства
-- Кнопка поиска: сканировать и найти новые устройства
-- Клик по девайсу: открыть вебморду
-- Удерживать девайс: удалить его из списка
-- Клик по маске подсети: изменить её`,
+Настрой маску подсети как в роутере (по умолч. 255.255.255.0) и жми обновить
+- Кнопка обновить: сканировать и найти новые устройства
+- Клик по устройству: открыть вебморду
+- Удерживать устройство: удалить его из списка`,
+        update: 'Обновите библиотеку Settings на устройстве',
+        remove: 'Удалить',
     },
     en: {
         help: `
-- Refresh: discover known devices
-- Search button: scan and find new devices
+Set subnet as in your router (default 255.255.255.0) and press refresh
+- Refresh button: scan and find new devices
 - Click device: open it
-- Hold device: remove it
-- Click subnet: change it`,
+- Hold device: remove it`,
+        update: 'Update Settings library on device',
+        remove: 'Remove',
     }
 };
+
+export let lang = lang_base.en;
+
+export function setLang(code) {
+    lang = lang_base[code];
+}

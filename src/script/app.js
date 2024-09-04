@@ -1,12 +1,13 @@
 import { Component } from '@alexgyver/component';
 import { getIPs, getLocalIP, getMaskList } from './network';
 import Device from './device';
-import { lang } from './lang';
+import { lang, setLang } from './lang';
 
 export default class App {
     localIP = null;
     devices = {};
     devices_obj = {};
+    searching = false;
 
     constructor() {
         Component.make('div', {
@@ -23,21 +24,8 @@ export default class App {
                             tag: 'div',
                             children: [
                                 {
-                                    tag: 'div',
-                                    class: 'row',
-                                    children: [
-                                        {
-                                            tag: 'div',
-                                            class: 'icon search',
-                                            events: {
-                                                click: () => this.search(),
-                                            }
-                                        },
-                                        {
-                                            tag: 'span',
-                                            text: 'Settings',
-                                        },
-                                    ]
+                                    tag: 'span',
+                                    text: 'Settings',
                                 },
                                 {
                                     tag: 'span',
@@ -48,23 +36,37 @@ export default class App {
                         },
                         {
                             tag: 'div',
+                            class: 'row',
                             children: [
                                 {
-                                    tag: 'span',
-                                    class: 'ip',
-                                    var: 'ip_label',
-                                    text: 'IP unset',
+                                    tag: 'div',
+                                    class: 'col',
+                                    children: [
+                                        {
+                                            tag: 'span',
+                                            class: 'ip',
+                                            var: 'ip_label',
+                                            text: 'IP unset',
+                                        },
+                                        {
+                                            tag: 'select',
+                                            var: 'subnet',
+                                            class: 'subnet',
+                                            events: {
+                                                change: () => {
+                                                    localStorage.setItem('cidr', this.$subnet.value);
+                                                }
+                                            }
+                                        },
+                                    ]
                                 },
                                 {
-                                    tag: 'select',
-                                    var: 'subnet',
-                                    class: 'subnet',
+                                    tag: 'div',
+                                    class: 'icon refresh',
                                     events: {
-                                        change: () => {
-                                            localStorage.setItem('cidr', this.$subnet.value);
-                                        }
+                                        click: () => this.search(),
                                     }
-                                }
+                                },
                             ]
                         },
                     ]
@@ -94,10 +96,7 @@ export default class App {
         switch (navigator.language || navigator.userLanguage) {
             case 'ru-RU':
             case 'ru':
-                this.lang = lang.ru;
-                break;
-            default:
-                this.lang = lang.en;
+                setLang('ru');
                 break;
         }
 
@@ -110,7 +109,7 @@ export default class App {
         setTimeout(() => {
             if (!localStorage.hasOwnProperty('first')) {
                 localStorage.setItem('first', 'true');
-                alert(this.lang.help);
+                alert(lang.help);
             }
         }, 100);
 
@@ -155,6 +154,10 @@ export default class App {
                 changed = true;
             }
         } else {
+            if (!dev.mac) {
+                alert(lang.update + ' ' + dev.name);
+                return;
+            }
             this.devices[dev.mac] = { name: dev.name, ip: dev.ip };
             this.devices_obj[dev.mac] = new Device(this.$devices, dev.mac, dev.name, dev.ip);
             this.devices_obj[dev.mac].$root.classList = 'device';
@@ -164,10 +167,15 @@ export default class App {
     }
 
     search() {
+        if (this.searching) return;
+        this.searching = true;
         discover(getIPs(this.localIP, this.$subnet.value),
             (dev) => this.addDevice(dev),
             (perc) => this.$percent.textContent = perc + '%',
-            () => this.$percent.textContent = '');
+            () => {
+                this.$percent.textContent = '';
+                this.searching = false;
+            });
     }
 }
 

@@ -1,4 +1,5 @@
 import { Component } from "@alexgyver/component";
+import { lang } from "./lang";
 
 export default class Device {
     timer = null;
@@ -39,7 +40,7 @@ export default class Device {
                     console.log('click');
                 },
                 contextmenu: (e) => {
-                    if (confirm(`Remove ${name}?`)) {
+                    if (confirm(lang.remove + ' ' + name + '?')) {
                         this.$root.dispatchEvent(new CustomEvent("remove", {
                             detail: { mac: this.mac },
                             bubbles: true,

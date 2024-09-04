@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require("webpack");
-var PACKAGE = require('./package.json');
+const PACKAGE = require('./package.json');
 
 const ReplaceHashInFileWebpackPlugin = require('replace-hash-in-file-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
