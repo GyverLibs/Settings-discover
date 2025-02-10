@@ -77,6 +77,7 @@ body {
 
 .header .ip {
     font-size: 15px;
+    cursor: pointer;
 }
 
 .subnet {

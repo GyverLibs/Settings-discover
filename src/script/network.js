@@ -9,7 +9,7 @@ export function getLocalIP() {
         rtc.addEventListener("icecandidate", evt => {
             if (evt.candidate && evt.candidate.address) {
                 if (evt.candidate.address.endsWith('.local')) {
-                    alert(`Disable WEB RTC anonymizer: ${browser()}:/` + `/flags/#enable-webrtc-hide-local-ips-with-mdns`);
+                    alert(`Disable WEB RTC anonymizer: ${browser()}://flags/#enable-webrtc-hide-local-ips-with-mdns\r\n\r\nOr set local IP manually`);
                 } else {
                     res(evt.candidate.address);
                 }

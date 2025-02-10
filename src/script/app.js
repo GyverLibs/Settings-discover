@@ -47,6 +47,16 @@ export default class App {
                                             class: 'ip',
                                             var: 'ip_label',
                                             text: 'IP unset',
+                                            events: {
+                                                click: () => {
+                                                    let res = prompt('Local IP', this.localIP);
+                                                    if (res) {
+                                                        this.localIP = res;
+                                                        this.$ip_label.innerText = this.localIP;
+                                                        localStorage.setItem('ip', res);
+                                                    }
+                                                }
+                                            }
                                         },
                                         {
                                             tag: 'select',
@@ -122,13 +132,13 @@ export default class App {
         }
 
         // ip
-        this.localIP = await getLocalIP();
-        if (this.localIP) {
-            this.$ip_label.innerText = this.localIP;
+        if (localStorage.hasOwnProperty('ip')) {
+            this.localIP = localStorage.getItem('ip');
         } else {
-            this.$ip_label.innerText = "IP error";
-            return;
+            this.localIP = await getLocalIP();
         }
+        
+        this.$ip_label.innerText = this.localIP ? this.localIP : "IP error";
 
         // known
         let ips = [];
