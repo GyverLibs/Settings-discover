@@ -199,7 +199,9 @@ async function discover(ips, onDiscover, onProcess, onEnd) {
             if (ip == ips.length - 1) if (onEnd) onEnd();
 
             try {
-                let res = await fetch(`http://${ips[ip]}/settings?action=discover`, { signal: AbortSignal.timeout(timeout) });
+                const options = { signal: AbortSignal.timeout(timeout) };
+                let res = await fetch(`http://${ips[ip]}/settings?action=discover`, options);
+                if (res.status === 405) res = await fetch(`http://${ips[ip]}/discover`, options);
                 if (res && res.ok) {
                     res = await res.json();
                     res.ip = ips[ip];
